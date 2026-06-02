@@ -11,7 +11,6 @@ async function checkAuth(request) {
 
 export async function GET(request) {
   if (!await checkAuth(request)) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
-
   await initDB()
   const result = await query(`
     SELECT s.*, 
@@ -26,11 +25,9 @@ export async function GET(request) {
 
 export async function POST(request) {
   if (!await checkAuth(request)) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
-
   await initDB()
   const body = await request.json()
   const { name, email, whatsapp, course, platform, purchase_date, duration, payment_status, progress, notes, hotmart_user_id } = body
-
   const result = await query(
     `INSERT INTO students (name, email, whatsapp, course, platform, purchase_date, duration, payment_status, progress, notes, hotmart_user_id)
      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)

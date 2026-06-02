@@ -11,21 +11,16 @@ async function checkAuth(request) {
 
 export async function POST(request) {
   if (!await checkAuth(request)) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
-
   await initDB()
-
   try {
     const hotmartStudents = await getAllHotmartStudents()
     let synced = 0
-
     for (const hs of hotmartStudents) {
       const progress = await getStudentProgress(hs.ukey || hs.user?.ukey)
       const userId = hs.ukey || hs.user?.ukey
       const name = hs.name || hs.user?.name || 'Sem nome'
       const email = hs.email || hs.user?.email || ''
-
       if (!userId || !email) continue
-
       await query(
         `INSERT INTO students (hotmart_user_id, name, email, progress, platform)
          VALUES ($1, $2, $3, $4, 'Hotmart')
@@ -34,7 +29,6 @@ export async function POST(request) {
       )
       synced++
     }
-
     return NextResponse.json({ ok: true, synced })
   } catch (err) {
     return NextResponse.json({ error: err.message }, { status: 500 })
@@ -43,7 +37,6 @@ export async function POST(request) {
 
 export async function GET(request) {
   if (!await checkAuth(request)) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
-
   try {
     const students = await getAllHotmartStudents()
     return NextResponse.json({ total: students.length, students: students.slice(0, 5) })
