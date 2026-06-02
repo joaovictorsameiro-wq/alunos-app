@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
-import { getAllHotmartStudents, getStudentProgress } from '@/lib/hotmart'
-import { query, initDB } from '@/lib/db'
-import { getTokenFromRequest, verifyToken } from '@/lib/auth'
+import { getAllHotmartStudents, getStudentProgress } from '../../../lib/hotmart'
+import { query, initDB } from '../../../lib/db'
+import { getTokenFromRequest, verifyToken } from '../../../lib/auth'
 
 async function checkAuth(request) {
   const token = getTokenFromRequest(request)

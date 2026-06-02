@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
-import { query, initDB } from '@/lib/db'
-import { getTokenFromRequest, verifyToken } from '@/lib/auth'
+import { query, initDB } from '../../../lib/db'
+import { getTokenFromRequest, verifyToken } from '../../../lib/auth'
 
 async function checkAuth(request) {
   const token = getTokenFromRequest(request)
